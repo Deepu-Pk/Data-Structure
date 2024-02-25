@@ -35,6 +35,15 @@ class hash_table{
         Node<T>* searchKey(string key);
         void deleteKey(string key);
         void print();
+        T& operator[](string key){
+            Node<T>* temp = searchKey(key);
+            if(temp == NULL){
+                T object;
+                insert(key,object);
+                temp = searchKey(key);
+            }
+            return temp->value;
+        }
 };
 
 template<typename T>
@@ -136,14 +145,14 @@ void hash_table<T>::print(){
 int main(){
     string key;
     hash_table<int> hash;
-    hash.insert("Ramu",27);
-    hash.insert("Maju",28);
-    hash.insert("Raju",30);
-    hash.insert("krishna",26);
-    hash.insert("Aju",25);
-    hash.insert("Anju",31);
-    hash.insert("Bal",40);
-    hash.insert("velu",40);
+    hash["Ramu"] = 27;
+    hash["Manju"] = 28;
+    hash["Raju"] = 30;
+    hash["Krishna"] = 26;
+    hash["Anju"] = 21;
+    hash["Balu"] = 40;
+    hash["Velu"] = 40;
+    hash["Rama"] = 40;
     cout<<"Hash table"<<endl;
     hash.print();
     cout<<"[INFO] Enter the key to search : ";
