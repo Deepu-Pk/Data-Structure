@@ -1,100 +1,78 @@
 /*
  Stack using linked linked list
 */
+
 #include<iostream>
 using namespace std;
 
-template<class T>
-class Node{
-    public:
-        T data;
-        Node<T>* next;
-        Node(T data){
-            this->data = data;
-            next = nullptr;
-        }
-};
-
-template<class T>
+template<typename T>
 class stack{
-    private:
-        Node<T>* root;
+    class Node{
+        public:
+            T data;
+            Node* next;
+            Node(T data) : data(data),next(nullptr) {}
+    };
+    Node* head;
     public:
-        stack(){
-            root = nullptr;
-        }
+        stack() : head(nullptr) {}
         bool empty();
-        bool full();
         void push(T data);
         void pop();
         T top();
         ~stack(){
-            while(root != nullptr){
-                Node<T>* temp = root;
-                root = root->next;
+            while(head != nullptr){
+                Node* temp = head;
+                head = head->next;
                 delete temp;
             }
         }
-
 };
 
-
-template<class T>
+template<typename T>
 bool stack<T>::empty(){
-    return root == nullptr;
+    return head == nullptr;
 }
 
-template<class T>
-bool stack<T>::full(){
-    Node<T>* temp = new Node<T>(10);
-    if(temp == nullptr){
-        return true;
-    }
-    delete temp;
-    return false;
-}
-
-template<class T>
+template<typename T>
 void stack<T>::push(T data){
-    if(!full()){
-        Node<T>* temp = new Node<T>(data);
-        temp->next = root;
-        root = temp;
-        return;
+    Node* temp = new Node(data);
+    if(temp == nullptr){
+        cerr<<"[ERROR] Stack overflow"<<endl;
+        exit(0);
     }
-    cerr<<"[ERROR] Stack overflow"<<endl;
-    abort();
+    temp->next = head;
+    head = temp;
 }
 
-template<class T>
+template<typename T>
 void stack<T>::pop(){
-    if(!empty()){
-        Node<T>* temp = root;
-    
-        root = root->next;
-        delete temp;
-        return;
+    if(empty()){
+        cerr<<"[ERROR] Stack underflow"<<endl;
+        exit(0);
     }
-    cerr<<"[ERROR] Stack underflow"<<endl;
-    abort();
+    Node* temp = head;
+    head = head->next;
+    delete temp;
 }
 
-template<class T>
+template<typename T>
 T stack<T>::top(){
-    if(!empty()){
-        return root->data;
+    if(empty()){
+        cerr<<"[ERROR] Stack underflow"<<endl;
+        exit(0);
     }
-    cerr<<"[ERROR] Stack underflow"<<endl;
-    abort();
+    return head->data;
 }
-
 
 int main(){
     stack<int> s;
-    s.push(10);
-    s.push(5);
+    int arr[] = {1,2,3,4,5,6,7,8,9,10};
+    for(int data : arr){
+        s.push(data);
+    }
     while(!s.empty()){
-        cout<<s.top()<<" ";
+        cout<<s.top()<<",";
         s.pop();
     }
     return 0;
